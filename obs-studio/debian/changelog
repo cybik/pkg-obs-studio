@@ -1,0 +1,11 @@
+obs-studio (100:28.0.0-99pika1) kinetic; urgency=medium
+
+  * Rebrand to PikaOS
+
+ -- Ward Nakchbandi <hotrod.master@hotmail.com>  Sat, 01 Oct 2022 14:50:00 +0200
+
+obs-studio (102:28.0.0-99nobara1) kinetic; urgency=low
+
+  * Initial release.
+ 
+ -- Ward Nakchbandi <hotrod.master@hotmail.com>  Fri, 14 Oct 2022 14:47:00 +0300

@@ -1,0 +1,99 @@
+diff --git a/plugins/obs-x264/obs-x264.c b/plugins/obs-x264/obs-x264.c
+index efcb8e42e..37acf579a 100644
+--- a/plugins/obs-x264/obs-x264.c
++++ b/plugins/obs-x264/obs-x264.c
+@@ -68,7 +68,7 @@ struct obs_x264 {
+ static const char *obs_x264_getname(void *unused)
+ {
+ 	UNUSED_PARAMETER(unused);
+-	return "x264";
++	return "CPU: x264";
+ }
+ 
+ static void obs_x264_stop(void *data);
+ diff --git a/plugins/obs-ffmpeg/jim-nvenc.c b/plugins/obs-ffmpeg/jim-nvenc.c
+index 578da63b1..1a509a236 100644
+--- a/plugins/obs-ffmpeg/jim-nvenc.c
++++ b/plugins/obs-ffmpeg/jim-nvenc.c
+@@ -213,14 +213,14 @@ static void nv_texture_free(struct nvenc_data *enc, struct nv_texture *nvtex)
+ static const char *h264_nvenc_get_name(void *type_data)
+ {
+ 	UNUSED_PARAMETER(type_data);
+-	return "NVIDIA NVENC H.264";
++	return "GPU: Nvidia NVENC H.264";
+ }
+ 
+ #ifdef ENABLE_HEVC
+ static const char *hevc_nvenc_get_name(void *type_data)
+ {
+ 	UNUSED_PARAMETER(type_data);
+-	return "NVIDIA NVENC HEVC";
++	return "GPU: Nvidia NVENC H.265/HEVC";
+ }
+ #endif
+ 
+diff --git a/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c b/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c
+index 4792c2d08..9ba731288 100644
+--- a/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c
++++ b/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c
+@@ -39,7 +39,7 @@ struct nvenc_encoder {
+ 	DARRAY(uint8_t) sei;
+ };
+ 
+-#define ENCODER_NAME_H264 "NVIDIA NVENC H.264 (FFmpeg)"
++#define ENCODER_NAME_H264 "GPU: Nvidia NVENC H.264"
+ static const char *h264_nvenc_getname(void *unused)
+ {
+ 	UNUSED_PARAMETER(unused);
+@@ -47,7 +47,7 @@ static const char *h264_nvenc_getname(void *unused)
+ }
+ 
+ #ifdef ENABLE_HEVC
+-#define ENCODER_NAME_HEVC "NVIDIA NVENC HEVC (FFmpeg)"
++#define ENCODER_NAME_HEVC "GPU: Nvidia NVENC H.265/HEVC"
+ static const char *hevc_nvenc_getname(void *unused)
+ {
+ 	UNUSED_PARAMETER(unused);
+diff --git a/plugins/obs-ffmpeg/obs-ffmpeg-av1.c b/plugins/obs-ffmpeg/obs-ffmpeg-av1.c
+index 27ffcc3e9..e1f1a15b1 100644
+--- a/plugins/obs-ffmpeg/obs-ffmpeg-av1.c
++++ b/plugins/obs-ffmpeg/obs-ffmpeg-av1.c
+@@ -36,13 +36,13 @@ struct av1_encoder {
+ static const char *aom_av1_getname(void *unused)
+ {
+ 	UNUSED_PARAMETER(unused);
+-	return "AOM AV1";
++	return "CPU: AOM AV1";
+ }
+ 
+ static const char *svt_av1_getname(void *unused)
+ {
+ 	UNUSED_PARAMETER(unused);
+-	return "SVT-AV1";
++	return "CPU: SVT-AV1";
+ }
+ 
+ static void av1_video_info(void *data, struct video_scale_info *info)
+ 
+diff --git a/plugins/obs-ffmpeg/texture-amf.cpp b/plugins/obs-ffmpeg/texture-amf.cpp
+index 8fa565ee6..5d2aa6786 100644
+--- a/plugins/obs-ffmpeg/texture-amf.cpp
++++ b/plugins/obs-ffmpeg/texture-amf.cpp
+@@ -1063,7 +1063,7 @@ static obs_properties_t *amf_hevc_properties(void *unused)
+ 
+ static const char *amf_avc_get_name(void *)
+ {
+-	return "AMD HW H.264";
++	return "GPU: AMD AMF H.264";
+ }
+ 
+ static inline int get_avc_preset(amf_base *enc, obs_data_t *settings)
+@@ -1391,7 +1391,7 @@ static void register_avc()
+ 
+ static const char *amf_hevc_get_name(void *)
+ {
+-	return "AMD HW H.265 (HEVC)";
++	return "GPU: AMD AMF H.265/HEVC";
+ }
+ 
+ static inline int get_hevc_preset(amf_base *enc, obs_data_t *settings)
