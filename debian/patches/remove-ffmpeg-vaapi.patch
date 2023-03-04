@@ -17,18 +17,18 @@ diff '--color=auto' -ru a/plugins/obs-ffmpeg/obs-ffmpeg.c b/plugins/obs-ffmpeg/o
 @@ -43,10 +43,6 @@
  extern struct obs_encoder_info svt_av1_encoder_info;
  extern struct obs_encoder_info aom_av1_encoder_info;
-
+ 
 -#ifdef LIBAVUTIL_VAAPI_AVAILABLE
 -extern struct obs_encoder_info vaapi_encoder_info;
 -#endif
 -
  #ifndef __APPLE__
-
+ 
  static const char *nvenc_check_name = "nvenc_check";
 @@ -322,19 +318,6 @@
-
+ 
  #endif
-
+ 
 -#ifdef LIBAVUTIL_VAAPI_AVAILABLE
 -static bool h264_vaapi_supported(void)
 -{
@@ -42,13 +42,13 @@ diff '--color=auto' -ru a/plugins/obs-ffmpeg/obs-ffmpeg.c b/plugins/obs-ffmpeg/o
 -	return vaapi_get_h264_default_device() != NULL;
 -}
 -#endif
-
+ 
  #ifdef _WIN32
  extern void jim_nvenc_load(bool h264, bool hevc, bool av1);
 @@ -412,20 +395,6 @@
  	amf_load();
  #endif
-
+ 
 -#ifdef LIBAVUTIL_VAAPI_AVAILABLE
 -	const char *libva_env = getenv("LIBVA_DRIVER_NAME");
 -	if (!!libva_env)
@@ -64,6 +64,6 @@ diff '--color=auto' -ru a/plugins/obs-ffmpeg/obs-ffmpeg.c b/plugins/obs-ffmpeg/o
 -	}
 -#endif
  #endif
-
+ 
  #if ENABLE_FFMPEG_LOGGING
 Only in a/plugins/obs-ffmpeg: obs-ffmpeg-vaapi.c
