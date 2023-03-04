@@ -21,20 +21,20 @@ diff --git a/plugins/obs-ffmpeg/CMakeLists.txt b/plugins/obs-ffmpeg/CMakeLists.t
 index 681a057..35cb1ea 100644
 --- a/plugins/obs-ffmpeg/CMakeLists.txt
 +++ b/plugins/obs-ffmpeg/CMakeLists.txt
-@@ -119,11 +119,14 @@ if(OS_WINDOWS)
+@@ -119,11 +119,14 @@
              obs-ffmpeg.rc)
- 
+
  elseif(OS_POSIX AND NOT OS_MACOS)
 +  add_subdirectory(obs-amf-test)
    find_package(Libva REQUIRED)
    find_package(Libpci REQUIRED)
-   target_sources(obs-ffmpeg PRIVATE vaapi-utils.c
+   target_sources(obs-ffmpeg PRIVATE obs-ffmpeg-vaapi.c vaapi-utils.c
                                      vaapi-utils.h)
    target_link_libraries(obs-ffmpeg PRIVATE Libva::va Libva::drm LIBPCI::LIBPCI)
 +  target_sources(obs-ffmpeg PRIVATE texture-amf.cpp)
 +  target_link_libraries(obs-ffmpeg PRIVATE LIBPCI::LIBPCI)
  endif()
- 
+
  setup_plugin_target(obs-ffmpeg)
 diff --git a/plugins/obs-ffmpeg/obs-amf-test/CMakeLists.txt b/plugins/obs-ffmpeg/obs-amf-test/CMakeLists.txt
 index 85347e7..034b4cc 100644
