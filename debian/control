@@ -1,0 +1,13 @@
+Source: obs-studio
+Section: video
+Priority: optional
+Maintainer: Ward Nakchbandi <hotrod.master@hotmail.com>
+Build-Depends: debhelper (>= 9), dh-autoreconf, quilt, cdbs, cmake, git, libx11-dev, libgl1-mesa-dev | libgl-dev, libpulse-dev, libxcb-composite0-dev, libxinerama-dev, libv4l-dev, libudev-dev, libfreetype6-dev, libfontconfig-dev, qt6-base-dev, qt6-base-private-dev, libqt6svg6-dev, libx264-dev, libxcb-xinerama0-dev, libxcb-shm0-dev, libavformat-dev, libavcodec-dev, libavutil-dev, libswscale-dev, libswresample-dev, libavdevice-dev, libavfilter-dev, libfdk-aac-dev, libjack-jackd2-dev, libcurl4-openssl-dev, libspeexdsp-dev, libvlc-dev, libasound2-dev, libluajit-5.1-dev, python3-dev, swig, libmbedtls-dev, pkg-config, libxcb-randr0-dev, libxcb-xfixes0-dev, libx11-xcb-dev, libxcb1-dev, libjansson-dev, libnss3-dev, libxtst-dev, libatspi2.0-dev, libatk-bridge2.0-dev, libatk1.0-dev, libgtk2.0-dev, libgtkglext1-dev, libxss-dev, linux-generic, v4l2loopback-dkms, libwayland-dev, libpci-dev, libdrm-dev, libpipewire-0.3-dev, libvulkan-dev
+Homepage: http://obsproject.org
+
+Package: obs-studio
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}, qt6-wayland, qt6-qpa-plugins, obs-gstreamer-vaapi-plugin, obs-gamecapture-plugin
+Conflicts: libobs0, obs-plugins
+Description: OBS Studio for Nobara
+
