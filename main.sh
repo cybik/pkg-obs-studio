@@ -12,7 +12,7 @@ mv ./obs-studio-0fb8bb4b1e18ee1c870c48d35ab5b598af3b59e9 ./obs-studio
 cp -rvf ./debian ./obs-studio/
 cp -rvf ./build_dependencies  ./obs-studio/
 cd ./obs-studio
-for i in ../patches/*; do patch -Np1 -i $i ;done
+#for i in ../patches/*; do patch -Np1 -i $i ;done
 
 # Get build deps
 apt-get build-dep ./ -y
