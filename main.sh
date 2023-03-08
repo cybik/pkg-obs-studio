@@ -6,9 +6,11 @@ add-apt-repository https://ppa.pika-os.com
 add-apt-repository ppa:pikaos/pika
 add-apt-repository ppa:kubuntu-ppa/backports
 # Clone Upstream
-wget https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio/+sourcefiles/obs-studio/29.0.2-0obsproject1~kinetic/obs-studio_29.0.2.orig.tar.gz
-tar -xf ./obs-studio_29.0.2.orig.tar.gz -C ./
+git clone --recursive https://github.com/obsproject/obs-studio.git
+wget https://cdn-fastly.obsproject.com/downloads/cef_binary_5060_linux64.tar.bz2
+tar -xf ./cef_binary_5060_linux64.tar.bz2 -C ./build_dependencies/
 cp -rvf ./debian ./obs-studio/
+cp -rvf ./build_dependencies  ./obs-studio/
 cd ./obs-studio
 for i in ../patches/*; do patch -Np1 -i $i ;done
 
