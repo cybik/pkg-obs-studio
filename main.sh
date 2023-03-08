@@ -13,7 +13,7 @@ tar -xf ./cef_binary_5060_linux64.tar.bz2 -C ./build_dependencies/
 cp -rvf ./debian ./obs-studio/
 cp -rvf ./build_dependencies  ./obs-studio/
 cd ./obs-studio
-for i in ../patches/*; do patch -Np1 -i $i ;done
+#for i in ../patches/*; do patch -Np1 -i $i ;done
 
 # Get build deps
 apt-get build-dep ./ -y
