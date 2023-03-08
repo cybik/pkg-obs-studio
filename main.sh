@@ -10,7 +10,7 @@ wget https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio/+sourcefiles/o
 tar -xf ./obs-studio_29.0.2.orig.tar.gz -C ./
 cp -rvf ./debian ./obs-studio/
 cd ./obs-studio
-for i in ../patches/*; do patch -Np1 -i $i ;done
+#for i in ../patches/*; do patch -Np1 -i $i ;done
 
 # Get build deps
 apt-get build-dep ./ -y

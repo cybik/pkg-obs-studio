@@ -1,17 +1,30 @@
-obs-studio (100:29.0.2-99pika1) kinetic; urgency=medium
+obs-studio (29.0.2-0obsproject1~kinetic) kinetic; urgency=low
 
-  * New Upstream release
+  OBS Studio 29.0.2
 
- -- Ward Nakchbandi <hotrod.master@hotmail.com>  Sat, 01 Oct 2022 14:50:00 +0200
+  29.0.2 Hotfix Changes
 
-obs-studio (100:28.0.0-99pika1) kinetic; urgency=medium
+  * Fixed a bug introduced in 29.0.1 which caused sources with an upward compressor filter to stop audio playback under certain circumstances [notr1ch/pkv]
 
-  * Rebrand to PikaOS
+  29.0.1 Hotfix Changes
 
- -- Ward Nakchbandi <hotrod.master@hotmail.com>  Sat, 01 Oct 2022 14:50:00 +0200
+  * Fixed the "NVIDIA AUDIO Effects SDK is outdated" message appearing on the noise reduction filter properties when the SDK wasn't installed [notr1ch]
+  * Fixed a crash that could happen if you use NVIDIA's audio effect filters and then later uninstall the SDK [pkv]
+  * Fixed the expander and upward compressor audio filters sounding distorted [pkv/norihiro]
+  * Added "Knee Width" option to the upward compressor audio filter to improve quality [pkv/norihiro]
+  * Fixed a bug where overriding the theme on Linux could cause the program not to start up [kkartaltepe]
+  * Fixed software rendering not working properly on Linux [columbarius]
+  * Fixed a bug where the Stats window/panel would show an incorrect disk space calculation when pausing recordings [notr1ch]
+  * Fixed a bug on Windows where the "Force SDR" setting in window capture wasn't showing up [jpark37]
+  * Fixed a bug on macOS where the virtual camera would show up red [PatTheMav]
+  * Fixed a bug where Linux captures would not work correctly on X11 [kkartaltepe]
+  * Fixed a crash on Linux when using Wayland and trying to use the automatic scene switcher [GeorgesStavracas]
+  * Fixed a bug where alpha wouldn't output properly when setting OBS to use BGRA color format [jpark37]
+  * Fixed a crash on startup when OBS was minimized [derrod]
+  * Fixed a bug where projectors could look washed out when projecting SDR content while using an HDR display [jpark37]
+  * Fixed a bug on Windows where secondary displays could sometimes not show up in the display capture properties [jpark37]
+  * Fixed a crash when using the virtual camera as an OBS source and changing the canvas resolution [notr1ch]
+  * Fixed a bug on macOS where the properties window would go behind the main window after opening a file selection dialog [gxalpha]
+  * Fixed a bug where profile encoder settings would not properly update when switching between services that require a different encoder [tytan652]
 
-obs-studio (102:28.0.0-99nobara1) kinetic; urgency=low
-
-  * Initial release.
- 
- -- Ward Nakchbandi <hotrod.master@hotmail.com>  Fri, 14 Oct 2022 14:47:00 +0300
+ -- Kevin Henkel <obs.goldace@gmail.com>  Sat, 04 Feb 2023 12:48:06 +0100
