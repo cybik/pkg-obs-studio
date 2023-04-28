@@ -13,7 +13,7 @@ git clone --recursive https://github.com/obsproject/obs-studio.git
 cp -rvf ./debian ./obs-studio/
 cd ./obs-studio
 
-#for i in ../patches/*; do patch -Np1 -i $i ;done
+for i in ../patches/*; do patch -Np1 -i $i ;done
 
 # Get build deps brute force
 #apt-get build-dep ./ -y
@@ -36,6 +36,6 @@ apt-get install -y libasound2-dev libfdk-aac-dev libfontconfig-dev libfreetype6-
 #dpkg-buildpackage
 
 # Move the debs to output
-cd ../
+cd ./
 mkdir -p ./output
-mv ./*.deb ./output/
+mv ./obs-studio/build/obs-studio*.deb ./output/
