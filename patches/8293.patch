@@ -1,4 +1,4 @@
-From 037f33d27d521202f31e4590a7594e92f9767823 Mon Sep 17 00:00:00 2001
+From 6b022ae4b58af7a069a422d346f102bf18684249 Mon Sep 17 00:00:00 2001
 From: columbarius <co1umbarius@protonmail.com>
 Date: Sat, 21 Jan 2023 08:45:38 +0100
 Subject: [PATCH] pipewire: calc spa buffer size
@@ -14,7 +14,7 @@ buffer size was not large enough.
  1 file changed, 45 insertions(+), 2 deletions(-)
 
 diff --git a/plugins/linux-pipewire/pipewire.c b/plugins/linux-pipewire/pipewire.c
-index ada92cfe70007..43af0e7c7ef2a 100644
+index d639e86df0f25..e7a941d778b04 100644
 --- a/plugins/linux-pipewire/pipewire.c
 +++ b/plugins/linux-pipewire/pipewire.c
 @@ -144,6 +144,41 @@ static void update_pw_versions(obs_pipewire *obs_pw, const char *version)
@@ -90,7 +90,7 @@ index ada92cfe70007..43af0e7c7ef2a 100644
  	struct spa_pod_builder pod_builder =
  		SPA_POD_BUILDER_INIT(params_buffer, sizeof(params_buffer));
  	uint32_t n_params;
-@@ -967,7 +1010,7 @@ void obs_pipewire_connect_stream(obs_pipewire *obs_pw, int pipewire_node,
+@@ -970,7 +1013,7 @@ void obs_pipewire_connect_stream(obs_pipewire *obs_pw, int pipewire_node,
  	struct spa_pod_builder pod_builder;
  	const struct spa_pod **params = NULL;
  	uint32_t n_params;
