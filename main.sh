@@ -11,28 +11,14 @@ git clone --recursive https://github.com/obsproject/obs-studio.git
 cp -rvf ./debian ./obs-studio/
 cd ./obs-studio
 
-# remove -Werror flag to mitigate FTBFS with ffmpeg 5.1
+# remove -Werror flag to mitigate FTBFS with ffmpeg
 sed -i 's|-Werror-implicit-function-declaration||g' CMakeLists.txt
 
 ## remove Werror to fix compile error
-# there's probably a cleaner way to do this by modifying what compile flags
-# the rpmbuilder adds
 sed -i 's|    -Werror||g' cmake/Modules/CompilerConfig.cmake
 sed -i 's|    -Wswitch||g' cmake/Modules/CompilerConfig.cmake
 
 for i in ../patches/*.patch; do patch -Np1 -i $i ;done
-
-# Prepare plugins/obs-vkcapture
-#git clone --recurse-submodules https://github.com/nowrep/obs-vkcapture plugins/obs-vkcapture
-#cd plugins/obs-vkcapture
-#sed -i 's/install_obs_plugin_with_data/setup_plugin_target/g' CMakeLists.txt
-#cd ../../
-
-# Prepare plugins/obs-source-record
-#git clone --recurse-submodules https://github.com/exeldro/obs-source-record plugins/obs-source-record
-#cd plugins/obs-source-record
-#sed -i 's/install_obs_plugin_with_data/setup_plugin_target/g' CMakeLists.txt
-#cd ../../
 
 # Get build deps brute force
 apt-get install -y cmake ninja-build pkg-config clang clang-format build-essential curl ccache git libffmpeg-amf-dev
@@ -40,14 +26,9 @@ apt-get install -y libavcodec-dev libavdevice-dev libnss3-dev libnspr4-dev libpi
 apt-get install -y qt6-base-dev qt6-base-private-dev libqt6svg6-dev qt6-wayland qt6-image-formats-plugins
 apt-get install -y libasound2-dev libfdk-aac-dev libfontconfig-dev libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev libudev-dev libv4l-dev libva-dev libvlc-dev libdrm-dev
 
-
-#cmake --build ./.build --target package
 ./CI/linux/01_install_dependencies.sh
 ./CI/linux/02_build_obs.sh
 ./CI/linux/03_package_obs.sh
-
-# Build package
-#dpkg-buildpackage
 
 # Move the debs to output
 
