@@ -22,15 +22,15 @@ apt-get install -y libavcodec-dev libavdevice-dev libpipewire-0.3-dev libavfilte
 apt-get install -y qt6-base-dev qt6-base-private-dev libqt6svg6-dev qt6-wayland qt6-image-formats-plugins
 apt-get install -y libasound2-dev libfdk-aac-dev libfontconfig-dev libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev libudev-dev libv4l-dev libva-dev libvlc-dev libdrm-dev
 
-cmake -S . -B ./.build -G Ninja \
-    -DCEF_ROOT_DIR="build-dependencies/cef_binary_5060_linux64" \
-    -DENABLE_PIPEWIRE=ON \
-    -DENABLE_AJA=0
+#cmake -S . -B ./.build -G Ninja \
+#    -DCEF_ROOT_DIR="build-dependencies/cef_binary_5060_linux64" \
+#    -DENABLE_PIPEWIRE=ON \
+#    -DENABLE_AJA=0
 
-cmake --build ./.build --target package
-
-
-#./CI/build-linux.sh
+#cmake --build ./.build --target package
+./CI/linux/01_install_dependencies.sh
+./CI/linux/02_build_obs.sh
+./CI/linux/03_package_obs.sh
 
 # Build package
 #dpkg-buildpackage
