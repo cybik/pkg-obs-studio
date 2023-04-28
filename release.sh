@@ -8,4 +8,4 @@ rsync -azP --exclude '*.deb' ferreo@direct.pika-os.com:/srv/www/pikappa/ ./outpu
 reprepro -V --basedir ./output/repo/ includedeb kinetic ./output/*.deb
 
 # Push the updated ppa repo to the server
-rsync -azP ./output/repo/ ferreo@direct.pika-os.com:/srv/www/pikappa/
+#rsync -azP ./output/repo/ ferreo@direct.pika-os.com:/srv/www/pikappa/
