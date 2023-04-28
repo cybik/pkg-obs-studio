@@ -31,7 +31,6 @@ apt-get install -y libasound2-dev libfdk-aac-dev libfontconfig-dev libfreetype6-
 # Move the debs to output
 
 mkdir -p ../output
-ls
-ls./build/
-mv ./build/*.deb ../output/
+ls build/
+mv build/*.deb ../output/
 cd ../
