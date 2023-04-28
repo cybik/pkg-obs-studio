@@ -11,7 +11,7 @@ git clone --recursive https://github.com/obsproject/obs-studio.git
 cp -rvf ./debian ./obs-studio/
 cd ./obs-studio
 
-for i in ../patches/*; do patch -Np1 -i $i ;done
+for i in ../patches/*.patch; do patch -Np1 -i $i ;done
 
 # Get build deps brute force
 apt-get install -y cmake ninja-build pkg-config clang clang-format build-essential curl ccache git
