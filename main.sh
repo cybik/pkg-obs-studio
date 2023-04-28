@@ -13,11 +13,13 @@ git clone --recursive https://github.com/obsproject/obs-studio.git
 #cp -rvf ./debian ./obs-studio/
 #cp -rvf ./build_dependencies  ./obs-studio/
 cd ./obs-studio
-./CI/build-linux.sh
+
 #for i in ../patches/*; do patch -Np1 -i $i ;done
 
 # Get build deps
 apt-get build-dep ./ -y
+
+./CI/build-linux.sh
 
 # Build package
 dpkg-buildpackage
