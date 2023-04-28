@@ -23,16 +23,16 @@ sed -i 's|    -Wswitch||g' cmake/Modules/CompilerConfig.cmake
 for i in ../patches/*.patch; do patch -Np1 -i $i ;done
 
 # Prepare plugins/obs-vkcapture
-git clone --recurse-submodules https://github.com/nowrep/obs-vkcapture plugins/obs-vkcapture
-cd plugins/obs-vkcapture
-sed -i 's/install_obs_plugin_with_data/setup_plugin_target/g' CMakeLists.txt
-cd ../../
+#git clone --recurse-submodules https://github.com/nowrep/obs-vkcapture plugins/obs-vkcapture
+#cd plugins/obs-vkcapture
+#sed -i 's/install_obs_plugin_with_data/setup_plugin_target/g' CMakeLists.txt
+#cd ../../
 
 # Prepare plugins/obs-source-record
-git clone --recurse-submodules https://github.com/exeldro/obs-source-record plugins/obs-source-record
-cd plugins/obs-source-record
-sed -i 's/install_obs_plugin_with_data/setup_plugin_target/g' CMakeLists.txt
-cd ../../
+#git clone --recurse-submodules https://github.com/exeldro/obs-source-record plugins/obs-source-record
+#cd plugins/obs-source-record
+#sed -i 's/install_obs_plugin_with_data/setup_plugin_target/g' CMakeLists.txt
+#cd ../../
 
 # Get build deps brute force
 apt-get install -y cmake ninja-build pkg-config clang clang-format build-essential curl ccache git libffmpeg-amf-dev
