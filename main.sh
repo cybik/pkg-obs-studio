@@ -18,6 +18,7 @@ sed -i 's|-Werror-implicit-function-declaration||g' CMakeLists.txt
 # there's probably a cleaner way to do this by modifying what compile flags
 # the rpmbuilder adds
 sed -i 's|    -Werror||g' cmake/Modules/CompilerConfig.cmake
+sed -i 's|    -Wswitch||g' cmake/Modules/CompilerConfig.cmake
 
 for i in ../patches/*.patch; do patch -Np1 -i $i ;done
 
