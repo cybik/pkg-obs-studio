@@ -8,10 +8,9 @@ add-apt-repository ppa:kubuntu-ppa/backports
 # Clone Upstream
 git clone --recursive https://github.com/obsproject/obs-studio.git
 wget https://cdn-fastly.obsproject.com/downloads/cef_binary_5060_linux64.tar.bz2
-mkdir -p ./build_dependencies/
-tar -xf ./cef_binary_5060_linux64.tar.bz2 -C ./build_dependencies/
+mkdir -p ./obs-studio/build_dependencies/
+tar -xf ./cef_binary_5060_linux64.tar.bz2 -C ./obs-studio/build_dependencies/
 cp -rvf ./debian ./obs-studio/
-cp -rvf ./build_dependencies  ./obs-studio/
 cd ./obs-studio
 
 #for i in ../patches/*; do patch -Np1 -i $i ;done
@@ -24,7 +23,7 @@ apt-get install -y qt6-base-dev qt6-base-private-dev libqt6svg6-dev qt6-wayland 
 apt-get install -y libasound2-dev libfdk-aac-dev libfontconfig-dev libfreetype6-dev libjack-jackd2-dev libpulse-dev libsndio-dev libspeexdsp-dev libudev-dev libv4l-dev libva-dev libvlc-dev libdrm-dev
 
 cmake -S . -B ./.build -G Ninja \
-    -DCEF_ROOT_DIR="../build-dependencies/cef_binary_5060_linux64" \
+    -DCEF_ROOT_DIR="build-dependencies/cef_binary_5060_linux64" \
     -DENABLE_PIPEWIRE=ON \
     -DENABLE_AJA=0
 
