@@ -11,6 +11,14 @@ git clone --recursive https://github.com/obsproject/obs-studio.git
 cp -rvf ./debian ./obs-studio/
 cd ./obs-studio
 
+# remove -Werror flag to mitigate FTBFS with ffmpeg 5.1
+sed -i 's|-Werror-implicit-function-declaration||g' CMakeLists.txt
+
+## remove Werror to fix compile error
+# there's probably a cleaner way to do this by modifying what compile flags
+# the rpmbuilder adds
+sed -i 's|    -Werror||g' cmake/Modules/CompilerConfig.cmake
+
 for i in ../patches/*.patch; do patch -Np1 -i $i ;done
 
 # Prepare plugins/obs-vkcapture
