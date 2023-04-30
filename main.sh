@@ -7,7 +7,6 @@ add-apt-repository ppa:pikaos/pika
 add-apt-repository ppa:kubuntu-ppa/backports
 # Clone Upstream
 git clone --recursive https://github.com/obsproject/obs-studio.git
-git checkout 7ceb39bd5630c4363543d121a0c2c753492e3f97
 
 cp -rvf ./debian ./obs-studio/
 cd ./obs-studio
