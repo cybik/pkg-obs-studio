@@ -10,11 +10,10 @@ git clone --recursive https://github.com/obsproject/obs-studio.git
 
 cp -rvf ./debian ./obs-studio/
 cd ./obs-studio
-cd ./plugins
 
 wget https://cdn-fastly.obsproject.com/downloads/cef_binary_5060_linux64.tar.bz2
 tar -xf ./cef_binary_5060_linux64.tar.bz2 -C ./
-cd ../
+git clone https://github.com/aja-video/ntv2.git
 
 # remove -Werror flag to mitigate FTBFS with ffmpeg
 sed -i 's|-Werror-implicit-function-declaration||g' CMakeLists.txt
