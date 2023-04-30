@@ -1,3 +1,9 @@
+obs-studio (29.0.2.git7ceb39b-99pika1.lunar) lunar; urgency=low
+
+  Update to lunar
+
+ -- Kevin Henkel <obs.goldace@gmail.com>  Sat, 04 Feb 2023 12:48:06 +0100
+
 obs-studio (29.0.2-0obsproject1~kinetic) kinetic; urgency=low
 
   OBS Studio 29.0.2

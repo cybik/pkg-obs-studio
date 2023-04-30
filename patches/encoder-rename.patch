@@ -20,7 +20,7 @@ index 7b247c8..5c4be0f 100644
  {
  	UNUSED_PARAMETER(type_data);
 -	return "NVIDIA NVENC H.264";
-+	return "GPU: Nvidia NVENC H.264";
++	return "GPU: Nvidia NVENC H.264/AVC";
  }
  
  #ifdef ENABLE_HEVC
@@ -61,7 +61,7 @@ index f0f7747..b5f5d0d 100644
  #endif
  
 -#define ENCODER_NAME_H264 "NVIDIA NVENC H.264 (FFmpeg)"
-+#define ENCODER_NAME_H264 "GPU: Nvidia NVENC H.264"
++#define ENCODER_NAME_H264 "GPU: Nvidia NVENC H.264/AVC"
  static const char *h264_nvenc_getname(void *unused)
  {
  	UNUSED_PARAMETER(unused);
@@ -74,28 +74,7 @@ index f0f7747..b5f5d0d 100644
  static const char *hevc_nvenc_getname(void *unused)
  {
  	UNUSED_PARAMETER(unused);
-diff --git a/plugins/obs-ffmpeg/texture-amf.cpp b/plugins/obs-ffmpeg/texture-amf.cpp
-index 7916cf8..92e57e0 100644
---- a/plugins/obs-ffmpeg/texture-amf.cpp
-+++ b/plugins/obs-ffmpeg/texture-amf.cpp
-@@ -1173,7 +1173,7 @@ static obs_properties_t *amf_av1_properties(void *unused)
- 
- static const char *amf_avc_get_name(void *)
- {
--	return "AMD HW H.264 (AVC)";
-+	return "GPU: AMD AMF H.264";
- }
- 
- static inline int get_avc_preset(amf_base *enc, const char *preset)
-@@ -1508,7 +1508,7 @@ static void register_avc()
- 
- static const char *amf_hevc_get_name(void *)
- {
--	return "AMD HW H.265 (HEVC)";
-+	return "GPU: AMD AMF H.265/HEVC";
- }
- 
- static inline int get_hevc_preset(amf_base *enc, const char *preset)
+
 diff --git a/plugins/obs-x264/obs-x264.c b/plugins/obs-x264/obs-x264.c
 index 3955dff..b60e990 100644
 --- a/plugins/obs-x264/obs-x264.c
