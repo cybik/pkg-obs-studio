@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
 
 BASE_DIR := $(CURDIR)
-CEF_DIR := $(BASE_DIR)/plugins/cef_binary_5060_linux64
-AJA_DIR := $(BASE_DIR)/plugins/aja
+CEF_DIR := $(BASE_DIR)/cef_binary_5060_linux64
+AJA_DIR := $(BASE_DIR)/ntv2
  
 %:
 		dh $@
