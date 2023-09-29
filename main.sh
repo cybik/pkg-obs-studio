@@ -9,7 +9,7 @@ cd ./obs-studio
 
 wget https://cdn-fastly.obsproject.com/downloads/cef_binary_5060_linux64.tar.bz2
 tar -xf ./cef_binary_5060_linux64.tar.bz2 -C ./
-git clone https://github.com/aja-video/ntv2.git
+#git clone https://github.com/aja-video/ntv2.git
 
 # remove -Werror flag to mitigate FTBFS with ffmpeg
 sed -i 's|-Werror-implicit-function-declaration||g' CMakeLists.txt
