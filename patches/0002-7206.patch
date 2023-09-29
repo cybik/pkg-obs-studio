@@ -19,7 +19,7 @@ will be detected on startup and the encoders disabled.
  create mode 100644 plugins/obs-ffmpeg/obs-amf-test/obs-amf-test-linux.cpp
 
 diff --git a/plugins/obs-ffmpeg/CMakeLists.txt b/plugins/obs-ffmpeg/CMakeLists.txt
-index 3eba00932ab9f..778d93ffba753 100644
+index 3eba00932..778d93ffb 100644
 --- a/plugins/obs-ffmpeg/CMakeLists.txt
 +++ b/plugins/obs-ffmpeg/CMakeLists.txt
 @@ -108,10 +108,12 @@ if(OS_WINDOWS)
@@ -37,7 +37,7 @@ index 3eba00932ab9f..778d93ffba753 100644
  endif()
  
 diff --git a/plugins/obs-ffmpeg/cmake/legacy.cmake b/plugins/obs-ffmpeg/cmake/legacy.cmake
-index 5540676eacba1..78b8c30a10d32 100644
+index 5540676ea..78b8c30a1 100644
 --- a/plugins/obs-ffmpeg/cmake/legacy.cmake
 +++ b/plugins/obs-ffmpeg/cmake/legacy.cmake
 @@ -106,9 +106,10 @@ if(OS_WINDOWS)
@@ -53,7 +53,7 @@ index 5540676eacba1..78b8c30a10d32 100644
  endif()
  
 diff --git a/plugins/obs-ffmpeg/obs-amf-test/CMakeLists.txt b/plugins/obs-ffmpeg/obs-amf-test/CMakeLists.txt
-index e00cef1cf1d8a..07cf1e0fc0e83 100644
+index e00cef1cf..07cf1e0fc 100644
 --- a/plugins/obs-ffmpeg/obs-amf-test/CMakeLists.txt
 +++ b/plugins/obs-ffmpeg/obs-amf-test/CMakeLists.txt
 @@ -6,8 +6,14 @@ find_package(AMF 1.4.29 REQUIRED)
@@ -75,7 +75,7 @@ index e00cef1cf1d8a..07cf1e0fc0e83 100644
  
 diff --git a/plugins/obs-ffmpeg/obs-amf-test/obs-amf-test-linux.cpp b/plugins/obs-ffmpeg/obs-amf-test/obs-amf-test-linux.cpp
 new file mode 100644
-index 0000000000000..db437d85164f7
+index 000000000..db437d851
 --- /dev/null
 +++ b/plugins/obs-ffmpeg/obs-amf-test/obs-amf-test-linux.cpp
 @@ -0,0 +1,140 @@
@@ -220,7 +220,7 @@ index 0000000000000..db437d85164f7
 +	return 0;
 +}
 diff --git a/plugins/obs-ffmpeg/obs-ffmpeg.c b/plugins/obs-ffmpeg/obs-ffmpeg.c
-index da0b2c2b46f7a..92421c6f34d9a 100644
+index da0b2c2b4..92421c6f3 100644
 --- a/plugins/obs-ffmpeg/obs-ffmpeg.c
 +++ b/plugins/obs-ffmpeg/obs-ffmpeg.c
 @@ -360,6 +360,9 @@ static bool hevc_vaapi_supported(void)
@@ -256,7 +256,7 @@ index da0b2c2b46f7a..92421c6f34d9a 100644
  #endif
  }
 diff --git a/plugins/obs-ffmpeg/texture-amf-opts.hpp b/plugins/obs-ffmpeg/texture-amf-opts.hpp
-index b1c37d200d8b0..d28e3f77e412f 100644
+index b1c37d200..d28e3f77e 100644
 --- a/plugins/obs-ffmpeg/texture-amf-opts.hpp
 +++ b/plugins/obs-ffmpeg/texture-amf-opts.hpp
 @@ -321,7 +321,7 @@ static void amf_apply_opt(amf_base *enc, obs_option *opt)
@@ -269,7 +269,7 @@ index b1c37d200d8b0..d28e3f77e412f 100644
  			bool bool_val = (bool)val;
  			set_amf_property(enc, wname, bool_val);
 diff --git a/plugins/obs-ffmpeg/texture-amf.cpp b/plugins/obs-ffmpeg/texture-amf.cpp
-index 88914a027f699..fe651f0e13d82 100644
+index 88914a027..fe651f0e1 100644
 --- a/plugins/obs-ffmpeg/texture-amf.cpp
 +++ b/plugins/obs-ffmpeg/texture-amf.cpp
 @@ -11,6 +11,7 @@
@@ -642,6 +642,8 @@ index 88914a027f699..fe651f0e13d82 100644
  	     (uint32_t)err.res);
  }
  
+-- 
+2.40.0
 
 From 33d3c849e8e68f0d479548640202d2e8e7041396 Mon Sep 17 00:00:00 2001
 From: Kurt Kartaltepe <kkartaltepe@gmail.com>
@@ -658,7 +660,7 @@ frames destined for encoding.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/libobs-opengl/gl-egl-common.c b/libobs-opengl/gl-egl-common.c
-index f06cd19019b29..e53f5a27555d4 100644
+index f06cd1901..e53f5a275 100644
 --- a/libobs-opengl/gl-egl-common.c
 +++ b/libobs-opengl/gl-egl-common.c
 @@ -186,7 +186,7 @@ struct gs_texture *gl_egl_create_texture_from_eglimage(
@@ -670,6 +672,8 @@ index f06cd19019b29..e53f5a27555d4 100644
  	const GLuint gltex = *(GLuint *)gs_texture_get_obj(texture);
  
  	gl_bind_texture(GL_TEXTURE_2D, gltex);
+-- 
+2.40.0
 
 From de0dd29322328c003944905c89b7da6401159fb5 Mon Sep 17 00:00:00 2001
 From: Kurt Kartaltepe <kkartaltepe@gmail.com>
@@ -692,7 +696,7 @@ support encode_texture2
  10 files changed, 135 insertions(+), 126 deletions(-)
 
 diff --git a/libobs-opengl/gl-subsystem.c b/libobs-opengl/gl-subsystem.c
-index 0cdd46d08c58d..8499af20e0475 100644
+index 0cdd46d08..8499af20e 100644
 --- a/libobs-opengl/gl-subsystem.c
 +++ b/libobs-opengl/gl-subsystem.c
 @@ -1519,6 +1519,18 @@ void gs_swapchain_destroy(gs_swapchain_t *swapchain)
@@ -715,7 +719,7 @@ index 0cdd46d08c58d..8499af20e0475 100644
  {
  	/* TODO */
 diff --git a/libobs/graphics/graphics-imports.c b/libobs/graphics/graphics-imports.c
-index d6eaccccc71fc..8de5bebb6c6ee 100644
+index d6eaccccc..8de5bebb6 100644
 --- a/libobs/graphics/graphics-imports.c
 +++ b/libobs/graphics/graphics-imports.c
 @@ -195,6 +195,8 @@ bool load_graphics_imports(struct gs_exports *exports, void *module,
@@ -737,7 +741,7 @@ index d6eaccccc71fc..8de5bebb6c6ee 100644
  	GRAPHICS_IMPORT_OPTIONAL(device_stagesurface_create_p010);
  	GRAPHICS_IMPORT_OPTIONAL(device_register_loss_callbacks);
 diff --git a/libobs/graphics/graphics-internal.h b/libobs/graphics/graphics-internal.h
-index d0ae5b895b39c..268ad36da522d 100644
+index d0ae5b895..268ad36da 100644
 --- a/libobs/graphics/graphics-internal.h
 +++ b/libobs/graphics/graphics-internal.h
 @@ -273,6 +273,16 @@ struct gs_exports {
@@ -775,7 +779,7 @@ index d0ae5b895b39c..268ad36da522d 100644
  	gs_stagesurf_t *(*device_stagesurface_create_nv12)(gs_device_t *device,
  							   uint32_t width,
 diff --git a/libobs/graphics/graphics.c b/libobs/graphics/graphics.c
-index 288fb1db6409c..78a7fc27bccb7 100644
+index 288fb1db6..78a7fc27b 100644
 --- a/libobs/graphics/graphics.c
 +++ b/libobs/graphics/graphics.c
 @@ -2908,6 +2908,84 @@ void gs_debug_marker_end(void)
@@ -949,7 +953,7 @@ index 288fb1db6409c..78a7fc27bccb7 100644
  {
  	graphics_t *graphics = thread_graphics;
 diff --git a/libobs/graphics/graphics.h b/libobs/graphics/graphics.h
-index 0f62d5b955062..ee17a65fa3357 100644
+index 0f62d5b95..ee17a65fa 100644
 --- a/libobs/graphics/graphics.h
 +++ b/libobs/graphics/graphics.h
 @@ -857,6 +857,12 @@ EXPORT bool gs_timer_range_get_data(gs_timer_range_t *range, bool *disjoint,
@@ -980,7 +984,7 @@ index 0f62d5b955062..ee17a65fa3357 100644
  						   uint32_t height);
  EXPORT gs_stagesurf_t *gs_stagesurface_create_p010(uint32_t width,
 diff --git a/libobs/obs-encoder.h b/libobs/obs-encoder.h
-index 6e831af5cf064..c6184bfb595a2 100644
+index 6e831af5c..c6184bfb5 100644
 --- a/libobs/obs-encoder.h
 +++ b/libobs/obs-encoder.h
 @@ -29,6 +29,9 @@
@@ -994,7 +998,7 @@ index 6e831af5cf064..c6184bfb595a2 100644
  #define OBS_ENCODER_CAP_PASS_TEXTURE (1 << 1)
  #define OBS_ENCODER_CAP_DYN_BITRATE (1 << 2)
 diff --git a/libobs/obs-internal.h b/libobs/obs-internal.h
-index 1ea555c3ac7a3..6e975d065417f 100644
+index 1ea555c3a..6e975d065 100644
 --- a/libobs/obs-internal.h
 +++ b/libobs/obs-internal.h
 @@ -268,9 +268,9 @@ struct obs_core_video_mix {
@@ -1009,7 +1013,7 @@ index 1ea555c3ac7a3..6e975d065417f 100644
  	gs_texture_t *render_texture;
  	gs_texture_t *output_texture;
 diff --git a/libobs/obs-video-gpu-encode.c b/libobs/obs-video-gpu-encode.c
-index 0dfb11df0508b..0d65a6d173e7a 100644
+index 0dfb11df0..0d65a6d17 100644
 --- a/libobs/obs-video-gpu-encode.c
 +++ b/libobs/obs-video-gpu-encode.c
 @@ -17,8 +17,11 @@
@@ -1087,7 +1091,7 @@ index 0dfb11df0508b..0d65a6d173e7a 100644
  
  void stop_gpu_encoding_thread(struct obs_core_video_mix *video)
 diff --git a/libobs/obs-video.c b/libobs/obs-video.c
-index 60acaaf6f6536..8918b869d8832 100644
+index 60acaaf6f..8918b869d 100644
 --- a/libobs/obs-video.c
 +++ b/libobs/obs-video.c
 @@ -427,7 +427,6 @@ stage_output_texture(struct obs_core_video_mix *video, int cur_texture,
@@ -1201,7 +1205,7 @@ index 60acaaf6f6536..8918b869d8832 100644
  	video->was_active = active;
  }
 diff --git a/libobs/obs.c b/libobs/obs.c
-index 1850ecc7584e5..1e57f25174a34 100644
+index 1850ecc75..1e57f2517 100644
 --- a/libobs/obs.c
 +++ b/libobs/obs.c
 @@ -179,7 +179,6 @@ static bool obs_init_gpu_conversion(struct obs_core_video_mix *video)
@@ -1247,6 +1251,8 @@ index 1850ecc7584e5..1e57f25174a34 100644
  	}
  
  	gs_texture_destroy(video->output_texture);
+-- 
+2.40.0
 
 From d9c1a0ce4ae3b7a2465b0f77dd1bc8e8ff74dd21 Mon Sep 17 00:00:00 2001
 From: Torge Matthies <openglfreak@googlemail.com>
@@ -1264,7 +1270,7 @@ And use it if non-NULL instead of encode_texture.
  5 files changed, 111 insertions(+), 17 deletions(-)
 
 diff --git a/libobs/obs-encoder.c b/libobs/obs-encoder.c
-index 677b92f7dabd7..83bf911c99484 100644
+index 677b92f7d..83bf911c9 100644
 --- a/libobs/obs-encoder.c
 +++ b/libobs/obs-encoder.c
 @@ -194,7 +194,7 @@ static void add_connection(struct obs_encoder *encoder)
@@ -1303,7 +1309,7 @@ index 677b92f7dabd7..83bf911c99484 100644
  get_callback_idx(const struct obs_encoder *encoder,
  		 void (*new_packet)(void *param, struct encoder_packet *packet),
 diff --git a/libobs/obs-encoder.h b/libobs/obs-encoder.h
-index c6184bfb595a2..f33e668bfa5d8 100644
+index c6184bfb5..f33e668bf 100644
 --- a/libobs/obs-encoder.h
 +++ b/libobs/obs-encoder.h
 @@ -105,6 +105,18 @@ struct encoder_frame {
@@ -1354,7 +1360,7 @@ index c6184bfb595a2..f33e668bfa5d8 100644
  
  EXPORT void obs_register_encoder_s(const struct obs_encoder_info *info,
 diff --git a/libobs/obs-internal.h b/libobs/obs-internal.h
-index 6e975d065417f..2abfbddee08e8 100644
+index 6e975d065..2abfbddee 100644
 --- a/libobs/obs-internal.h
 +++ b/libobs/obs-internal.h
 @@ -1259,6 +1259,9 @@ extern struct obs_encoder_info *find_encoder(const char *id);
@@ -1368,10 +1374,10 @@ index 6e975d065417f..2abfbddee08e8 100644
  			      void (*new_packet)(void *param,
  						 struct encoder_packet *packet),
 diff --git a/libobs/obs-module.c b/libobs/obs-module.c
-index cd7841b6c1960..443c97b2303ac 100644
+index cd7841b6c..443c97b23 100644
 --- a/libobs/obs-module.c
 +++ b/libobs/obs-module.c
-@@ -679,16 +679,30 @@ lookup_t *obs_module_load_locale(obs_module_t *module,
+@@ -679,16 +679,30 @@ cleanup:
  		da_push_back(dest, &data);                              \
  	} while (false)
  
@@ -1424,7 +1430,7 @@ index cd7841b6c1960..443c97b2303ac 100644
  		CHECK_REQUIRED_VAL_(info, encode, obs_register_encoder);
  
 diff --git a/libobs/obs-video-gpu-encode.c b/libobs/obs-video-gpu-encode.c
-index 0d65a6d173e7a..394ded9b68bca 100644
+index 0d65a6d17..394ded9b6 100644
 --- a/libobs/obs-video-gpu-encode.c
 +++ b/libobs/obs-video-gpu-encode.c
 @@ -78,7 +78,7 @@ static void *gpu_encode_thread(void *data)
@@ -1474,6 +1480,8 @@ index 0d65a6d173e7a..394ded9b68bca 100644
  			send_off_encoder_packet(encoder, success, received,
  						&pkt);
  
+-- 
+2.40.0
 
 From 0475795cdbf7c7bcb90bb373a10bbd5a7ce17a07 Mon Sep 17 00:00:00 2001
 From: David Rosca <nowrep@gmail.com>
@@ -1494,7 +1502,7 @@ v8: init AMF context with our Vulkan device
  3 files changed, 913 insertions(+), 32 deletions(-)
 
 diff --git a/plugins/obs-ffmpeg/CMakeLists.txt b/plugins/obs-ffmpeg/CMakeLists.txt
-index 778d93ffba753..97376182fbfae 100644
+index 778d93ffb..97376182f 100644
 --- a/plugins/obs-ffmpeg/CMakeLists.txt
 +++ b/plugins/obs-ffmpeg/CMakeLists.txt
 @@ -112,9 +112,10 @@ elseif(OS_LINUX OR OS_FREEBSD)
@@ -1510,7 +1518,7 @@ index 778d93ffba753..97376182fbfae 100644
  
  set_target_properties_obs(obs-ffmpeg PROPERTIES FOLDER plugins/obs-ffmpeg PREFIX "")
 diff --git a/plugins/obs-ffmpeg/cmake/legacy.cmake b/plugins/obs-ffmpeg/cmake/legacy.cmake
-index 78b8c30a10d32..b29eef673586a 100644
+index 78b8c30a1..b29eef673 100644
 --- a/plugins/obs-ffmpeg/cmake/legacy.cmake
 +++ b/plugins/obs-ffmpeg/cmake/legacy.cmake
 @@ -109,8 +109,9 @@ elseif(OS_POSIX AND NOT OS_MACOS)
@@ -1525,7 +1533,7 @@ index 78b8c30a10d32..b29eef673586a 100644
  
  setup_plugin_target(obs-ffmpeg)
 diff --git a/plugins/obs-ffmpeg/texture-amf.cpp b/plugins/obs-ffmpeg/texture-amf.cpp
-index fe651f0e13d82..0f5ee7b9105a8 100644
+index fe651f0e1..0f5ee7b91 100644
 --- a/plugins/obs-ffmpeg/texture-amf.cpp
 +++ b/plugins/obs-ffmpeg/texture-amf.cpp
 @@ -29,6 +29,15 @@
@@ -2665,3 +2673,6 @@ index fe651f0e13d82..0f5ee7b9105a8 100644
  	amf_encoder_info.create = amf_av1_create_fallback;
  	amf_encoder_info.encode = amf_encode_fallback;
  	amf_encoder_info.get_video_info = av1_video_info_fallback;
+-- 
+2.40.0
+

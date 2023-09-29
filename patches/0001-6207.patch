@@ -2269,3 +2269,4 @@ index 0000000000000..316276df75e54
 +void pipewire_audio_capture_load(void);
 +void pipewire_audio_capture_app_load(void);
 +/* ------------------------------------------------- */
+
