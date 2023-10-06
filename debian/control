@@ -10,7 +10,7 @@ Package: obs-studio
 Architecture: amd64
 Depends: ${shlibs:Depends}, ${misc:Depends}, qt6-wayland, qt6-qpa-plugins, obs-gstreamer-vaapi-plugin, obs-gamecapture-plugin
 Recommends: obs-gamecapture-plugin:i386
-Provides: libobs0, obs-plugins
+Provides: libobs0 (= ${binary:Version}), obs-plugins (= ${binary:Version})
 Conflicts: libobs0, obs-plugins
 Replaces: libobs0, obs-plugins
 Description: OBS Studio for Ubuntu 
