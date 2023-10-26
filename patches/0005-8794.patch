@@ -1,15 +1,15 @@
-From 50270b270250a2a95a3d5e2799e40331fb4f83e9 Mon Sep 17 00:00:00 2001
+From 38031cd5d1e9486f06c782fbc0162e9f95e3d116 Mon Sep 17 00:00:00 2001
 From: Bleuzen <12885163+Bleuzen@users.noreply.github.com>
-Date: Thu, 27 Apr 2023 22:42:49 +0200
+Date: Sat, 19 Aug 2023 02:50:09 +0200
 Subject: [PATCH] obs-ffmpeg: Add NVENC AV1 FFmpeg encoder, part 1
 
 ---
- plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c | 100 ++++++++++++++++++++++++--
- plugins/obs-ffmpeg/obs-ffmpeg.c       |   8 ++-
- 2 files changed, 100 insertions(+), 8 deletions(-)
+ plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c | 109 ++++++++++++++++++++++++--
+ plugins/obs-ffmpeg/obs-ffmpeg.c       |   9 ++-
+ 2 files changed, 109 insertions(+), 9 deletions(-)
 
 diff --git a/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c b/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c
-index 8cd813837c1e8..35c3822453741 100644
+index cfd4ea91916a2..80db3ba85ef39 100644
 --- a/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c
 +++ b/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c
 @@ -35,6 +35,7 @@ struct nvenc_encoder {
@@ -34,7 +34,7 @@ index 8cd813837c1e8..35c3822453741 100644
  static inline bool valid_format(enum video_format format)
  {
  	switch (format) {
-@@ -286,7 +294,9 @@ static void on_first_packet(void *data, AVPacket *pkt, struct darray *da)
+@@ -281,7 +289,9 @@ static void on_first_packet(void *data, AVPacket *pkt, struct darray *da)
  					 &enc->sei.array, &enc->sei.num);
  	} else
  #endif
@@ -45,7 +45,7 @@ index 8cd813837c1e8..35c3822453741 100644
  		obs_extract_avc_headers(pkt->data, pkt->size,
  					(uint8_t **)&da->array, &da->num,
  					&enc->header.array, &enc->header.num,
-@@ -305,10 +315,11 @@ static void on_first_packet(void *data, AVPacket *pkt, struct darray *da)
+@@ -300,10 +310,11 @@ static void on_first_packet(void *data, AVPacket *pkt, struct darray *da)
  }
  
  static void *nvenc_create_internal(obs_data_t *settings, obs_encoder_t *encoder,
@@ -58,21 +58,21 @@ index 8cd813837c1e8..35c3822453741 100644
  #ifdef ENABLE_HEVC
  	enc->hevc = hevc;
  	if (hevc) {
-@@ -321,7 +332,12 @@ static void *nvenc_create_internal(obs_data_t *settings, obs_encoder_t *encoder,
+@@ -316,7 +327,12 @@ static void *nvenc_create_internal(obs_data_t *settings, obs_encoder_t *encoder,
  #else
  	UNUSED_PARAMETER(hevc);
  #endif
 -	{
 +		if (av1) {
 +		if (!ffmpeg_video_encoder_init(
-+			    &enc->ffve, enc, encoder, "av1_nvenc", "nvenc_av1",
++			    &enc->ffve, enc, encoder, "av1_nvenc", NULL,
 +			    ENCODER_NAME_AV1, on_init_error, on_first_packet))
 +			goto fail;
 +	} else {
  		if (!ffmpeg_video_encoder_init(&enc->ffve, enc, encoder,
  					       "h264_nvenc", "nvenc_h264",
  					       ENCODER_NAME_H264, on_init_error,
-@@ -365,12 +381,14 @@ static void *h264_nvenc_create(obs_data_t *settings, obs_encoder_t *encoder)
+@@ -368,12 +384,14 @@ static void *h264_nvenc_create(obs_data_t *settings, obs_encoder_t *encoder)
  	}
  
  	bool psycho_aq = obs_data_get_bool(settings, "psycho_aq");
@@ -89,7 +89,7 @@ index 8cd813837c1e8..35c3822453741 100644
  	}
  
  	return enc;
-@@ -404,18 +422,59 @@ static void *hevc_nvenc_create(obs_data_t *settings, obs_encoder_t *encoder)
+@@ -415,18 +433,68 @@ static void *hevc_nvenc_create(obs_data_t *settings, obs_encoder_t *encoder)
  	}
  
  	bool psycho_aq = obs_data_get_bool(settings, "psycho_aq");
@@ -114,10 +114,19 @@ index 8cd813837c1e8..35c3822453741 100644
 +	video_t *video = obs_encoder_video(encoder);
 +	const struct video_output_info *voi = video_output_get_info(video);
 +	switch (voi->format) {
-+	case VIDEO_FORMAT_I010:
-+	case VIDEO_FORMAT_P010: {
++	case VIDEO_FORMAT_I010: {
 +		const char *const text =
-+			obs_module_text("NVENC.10bitUnsupported");
++			obs_module_text("NVENC.I010Unsupported");
++		obs_encoder_set_last_error(encoder, text);
++		blog(LOG_ERROR, "[NVENC encoder] %s", text);
++		return NULL;
++	}
++	case VIDEO_FORMAT_P010:
++		break;
++	case VIDEO_FORMAT_P216:
++	case VIDEO_FORMAT_P416: {
++		const char *const text =
++			obs_module_text("NVENC.16bitUnsupported");
 +		obs_encoder_set_last_error(encoder, text);
 +		blog(LOG_ERROR, "[NVENC encoder] %s", text);
 +		return NULL;
@@ -151,7 +160,7 @@ index 8cd813837c1e8..35c3822453741 100644
  static bool nvenc_encode(void *data, struct encoder_frame *frame,
  			 struct encoder_packet *packet, bool *received_packet)
  {
-@@ -658,6 +717,12 @@ obs_properties_t *hevc_nvenc_properties_ffmpeg(void *unused)
+@@ -669,6 +737,12 @@ obs_properties_t *hevc_nvenc_properties_ffmpeg(void *unused)
  }
  #endif
  
@@ -164,7 +173,7 @@ index 8cd813837c1e8..35c3822453741 100644
  static bool nvenc_extra_data(void *data, uint8_t **extra_data, size_t *size)
  {
  	struct nvenc_encoder *enc = data;
-@@ -719,3 +784,24 @@ struct obs_encoder_info hevc_nvenc_encoder_info = {
+@@ -730,3 +804,24 @@ struct obs_encoder_info hevc_nvenc_encoder_info = {
  #endif
  };
  #endif
@@ -190,10 +199,10 @@ index 8cd813837c1e8..35c3822453741 100644
 +#endif
 +};
 diff --git a/plugins/obs-ffmpeg/obs-ffmpeg.c b/plugins/obs-ffmpeg/obs-ffmpeg.c
-index da0b2c2b46f7a..e06f8ac7a9192 100644
+index 7eb9a876d82ff..07973ffc73b40 100644
 --- a/plugins/obs-ffmpeg/obs-ffmpeg.c
 +++ b/plugins/obs-ffmpeg/obs-ffmpeg.c
-@@ -43,6 +43,7 @@ extern struct obs_encoder_info h264_nvenc_encoder_info;
+@@ -42,6 +42,7 @@ extern struct obs_encoder_info h264_nvenc_encoder_info;
  #ifdef ENABLE_HEVC
  extern struct obs_encoder_info hevc_nvenc_encoder_info;
  #endif
@@ -201,20 +210,28 @@ index da0b2c2b46f7a..e06f8ac7a9192 100644
  extern struct obs_encoder_info svt_av1_encoder_info;
  extern struct obs_encoder_info aom_av1_encoder_info;
  
-@@ -307,8 +308,11 @@ static bool nvenc_supported(bool *out_h264, bool *out_hevc, bool *out_av1)
+@@ -272,7 +273,7 @@ static void do_nvenc_check_for_ubuntu_20_04(void)
+ static bool nvenc_codec_exists(const char *name, const char *fallback)
+ {
+ 	const AVCodec *nvenc = avcodec_find_encoder_by_name(name);
+-	if (!nvenc)
++	if (!nvenc && fallback)
+ 		nvenc = avcodec_find_encoder_by_name(fallback);
+ 
+ 	return nvenc != NULL;
+@@ -302,8 +303,10 @@ static bool nvenc_supported(bool *out_h264, bool *out_hevc, bool *out_av1)
  		if (success) {
  			void *const lib = os_dlopen("libnvidia-encode.so.1");
  			success = lib != NULL;
 -			if (success)
 +			if (success) {
  				os_dlclose(lib);
-+				av1 = nvenc_codec_exists("av1_nvenc",
-+							 "nvenc_av1");
++				av1 = nvenc_codec_exists("av1_nvenc", NULL);
 +			}
  		}
  #else
  		void *const lib = os_dlopen("libnvidia-encode.so.1");
-@@ -432,6 +436,8 @@ bool obs_module_load(void)
+@@ -427,6 +430,8 @@ bool obs_module_load(void)
  		if (hevc)
  			obs_register_encoder(&hevc_nvenc_encoder_info);
  #endif

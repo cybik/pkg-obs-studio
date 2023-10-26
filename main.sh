@@ -18,7 +18,7 @@ sed -i 's|-Werror-implicit-function-declaration||g' CMakeLists.txt
 sed -i 's|    -Werror||g' cmake/Modules/CompilerConfig.cmake
 sed -i 's|    -Wswitch||g' cmake/Modules/CompilerConfig.cmake
 
-for i in ../patches/* ; do echo "Applying Patch: $i" && patch -Np1 -i $i || echo "Applying Patch $i Failed!"; done
+for i in ../patches/* ; do echo "Applying Patch: $i" && patch -Np1 -i $i || bash -c "echo "Applying Patch $i Failed!" && exit 2"; done
 
 # Get build deps brute force
 apt-get build-dep -y ./
