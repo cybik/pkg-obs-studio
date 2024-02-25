@@ -2,7 +2,7 @@
 set -e
 
 # Clone Upstream
-git clone --recursive https://github.com/obsproject/obs-studio.git -b 29.1.3
+git clone --recursive https://github.com/obsproject/obs-studio.git -b 30.0.2
 
 cp -rvf ./debian ./obs-studio/
 cd ./obs-studio

@@ -4,34 +4,11 @@ Date: Sat, 29 Apr 2023 14:46:16 -0600
 Subject: [PATCH] encoder rename
 
 ---
- plugins/obs-ffmpeg/jim-nvenc.c        | 4 ++--
  plugins/obs-ffmpeg/obs-ffmpeg-av1.c   | 4 ++--
  plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c | 4 ++--
- plugins/obs-ffmpeg/texture-amf.cpp    | 6 +++---
  plugins/obs-x264/obs-x264.c           | 2 +-
  5 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/plugins/obs-ffmpeg/jim-nvenc.c b/plugins/obs-ffmpeg/jim-nvenc.c
-index 10a7dd1..c912205 100644
---- a/plugins/obs-ffmpeg/jim-nvenc.c
-+++ b/plugins/obs-ffmpeg/jim-nvenc.c
-@@ -227,14 +227,14 @@ static void nv_texture_free(struct nvenc_data *enc, struct nv_texture *nvtex)
- static const char *h264_nvenc_get_name(void *type_data)
- {
- 	UNUSED_PARAMETER(type_data);
--	return "NVIDIA NVENC H.264";
-+	return "GPU: NVIDIA NVENC H.264 (FFmpeg)";
- }
- 
- #ifdef ENABLE_HEVC
- static const char *hevc_nvenc_get_name(void *type_data)
- {
- 	UNUSED_PARAMETER(type_data);
--	return "NVIDIA NVENC HEVC";
-+	return "GPU: NVIDIA NVENC H.265/HEVC (FFmpeg)";
- }
- #endif
- 
 diff --git a/plugins/obs-ffmpeg/obs-ffmpeg-av1.c b/plugins/obs-ffmpeg/obs-ffmpeg-av1.c
 index 0b671ae..681f728 100644
 --- a/plugins/obs-ffmpeg/obs-ffmpeg-av1.c
@@ -74,37 +51,6 @@ index 8cd8138..add8e02 100644
  static const char *hevc_nvenc_getname(void *unused)
  {
  	UNUSED_PARAMETER(unused);
-diff --git a/plugins/obs-ffmpeg/texture-amf.cpp b/plugins/obs-ffmpeg/texture-amf.cpp
-index 0f5ee7b..e350257 100644
---- a/plugins/obs-ffmpeg/texture-amf.cpp
-+++ b/plugins/obs-ffmpeg/texture-amf.cpp
-@@ -2101,7 +2101,7 @@ static obs_properties_t *amf_av1_properties(void *unused)
- 
- static const char *amf_avc_get_name(void *)
- {
--	return "AMD HW H.264 (AVC)";
-+	return "GPU: AMD AMF H.264 (FFmpeg)";
- }
- 
- static inline int get_avc_preset(amf_base *enc, const char *preset)
-@@ -2443,7 +2443,7 @@ static void register_avc()
- 
- static const char *amf_hevc_get_name(void *)
- {
--	return "AMD HW H.265 (HEVC)";
-+	return "GPU: AMD AMF H.265/HEVC (FFmpeg)";
- }
- 
- static inline int get_hevc_preset(amf_base *enc, const char *preset)
-@@ -2788,7 +2788,7 @@ static void register_hevc()
- 
- static const char *amf_av1_get_name(void *)
- {
--	return "AMD HW AV1";
-+	return "GPU: AMD AMF AV1 (FFmpeg)";
- }
- 
- static inline int get_av1_preset(amf_base *enc, const char *preset)
 diff --git a/plugins/obs-x264/obs-x264.c b/plugins/obs-x264/obs-x264.c
 index 1de88d3..d4c377d 100644
 --- a/plugins/obs-x264/obs-x264.c

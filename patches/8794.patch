@@ -1,7 +1,7 @@
 From 38031cd5d1e9486f06c782fbc0162e9f95e3d116 Mon Sep 17 00:00:00 2001
 From: Bleuzen <12885163+Bleuzen@users.noreply.github.com>
 Date: Sat, 19 Aug 2023 02:50:09 +0200
-Subject: [PATCH] obs-ffmpeg: Add NVENC AV1 FFmpeg encoder, part 1
+Subject: [PATCH 1/2] obs-ffmpeg: Add NVENC AV1 FFmpeg encoder, part 1
 
 ---
  plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c | 109 ++++++++++++++++++++++++--
@@ -23,7 +23,7 @@ index cfd4ea91916a2..80db3ba85ef39 100644
 @@ -61,6 +62,13 @@ static const char *hevc_nvenc_getname(void *unused)
  }
  #endif
- 
+
 +#define ENCODER_NAME_AV1 "GPU: NVIDIA NVENC AV1 (FFmpeg)"
 +static const char *av1_nvenc_getname(void *unused)
 +{
@@ -47,13 +47,13 @@ index cfd4ea91916a2..80db3ba85ef39 100644
  					&enc->header.array, &enc->header.num,
 @@ -300,10 +310,11 @@ static void on_first_packet(void *data, AVPacket *pkt, struct darray *da)
  }
- 
+
  static void *nvenc_create_internal(obs_data_t *settings, obs_encoder_t *encoder,
 -				   bool psycho_aq, bool hevc)
 +				   bool psycho_aq, bool hevc, bool av1)
  {
  	struct nvenc_encoder *enc = bzalloc(sizeof(*enc));
- 
+
 +	enc->av1 = av1;
  #ifdef ENABLE_HEVC
  	enc->hevc = hevc;
@@ -74,7 +74,7 @@ index cfd4ea91916a2..80db3ba85ef39 100644
  					       ENCODER_NAME_H264, on_init_error,
 @@ -368,12 +384,14 @@ static void *h264_nvenc_create(obs_data_t *settings, obs_encoder_t *encoder)
  	}
- 
+
  	bool psycho_aq = obs_data_get_bool(settings, "psycho_aq");
 -	void *enc = nvenc_create_internal(settings, encoder, psycho_aq, false);
 +	void *enc = nvenc_create_internal(settings, encoder, psycho_aq, false,
@@ -87,11 +87,11 @@ index cfd4ea91916a2..80db3ba85ef39 100644
 +		enc = nvenc_create_internal(settings, encoder, false, false,
 +					    false);
  	}
- 
+
  	return enc;
 @@ -415,18 +433,68 @@ static void *hevc_nvenc_create(obs_data_t *settings, obs_encoder_t *encoder)
  	}
- 
+
  	bool psycho_aq = obs_data_get_bool(settings, "psycho_aq");
 -	void *enc = nvenc_create_internal(settings, encoder, psycho_aq, true);
 +	void *enc = nvenc_create_internal(settings, encoder, psycho_aq, true,
@@ -104,11 +104,11 @@ index cfd4ea91916a2..80db3ba85ef39 100644
 +		enc = nvenc_create_internal(settings, encoder, false, true,
 +					    false);
  	}
- 
+
  	return enc;
  }
  #endif
- 
+
 +static void *av1_nvenc_create(obs_data_t *settings, obs_encoder_t *encoder)
 +{
 +	video_t *video = obs_encoder_video(encoder);
@@ -163,7 +163,7 @@ index cfd4ea91916a2..80db3ba85ef39 100644
 @@ -669,6 +737,12 @@ obs_properties_t *hevc_nvenc_properties_ffmpeg(void *unused)
  }
  #endif
- 
+
 +obs_properties_t *av1_nvenc_properties_ffmpeg(void *unused)
 +{
 +	UNUSED_PARAMETER(unused);
@@ -209,7 +209,7 @@ index 7eb9a876d82ff..07973ffc73b40 100644
 +extern struct obs_encoder_info av1_nvenc_encoder_info;
  extern struct obs_encoder_info svt_av1_encoder_info;
  extern struct obs_encoder_info aom_av1_encoder_info;
- 
+
 @@ -272,7 +273,7 @@ static void do_nvenc_check_for_ubuntu_20_04(void)
  static bool nvenc_codec_exists(const char *name, const char *fallback)
  {
@@ -217,7 +217,7 @@ index 7eb9a876d82ff..07973ffc73b40 100644
 -	if (!nvenc)
 +	if (!nvenc && fallback)
  		nvenc = avcodec_find_encoder_by_name(fallback);
- 
+
  	return nvenc != NULL;
 @@ -302,8 +303,10 @@ static bool nvenc_supported(bool *out_h264, bool *out_hevc, bool *out_av1)
  		if (success) {
@@ -238,5 +238,38 @@ index 7eb9a876d82ff..07973ffc73b40 100644
 +		if (av1)
 +			obs_register_encoder(&av1_nvenc_encoder_info);
  	}
- 
+
  #ifdef _WIN32
+
+From c973af782104d8ac471e08da6b243ceac102f6f2 Mon Sep 17 00:00:00 2001
+From: Bleuzen <12885163+Bleuzen@users.noreply.github.com>
+Date: Mon, 13 Nov 2023 00:02:14 +0100
+Subject: [PATCH 2/2] obs-ffmpeg: Add NVENC AV1 FFmpeg encoder, part 2
+
+---
+ plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c b/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c
+index 80db3ba85ef39..72455e23b744f 100644
+--- a/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c
++++ b/plugins/obs-ffmpeg/obs-ffmpeg-nvenc.c
+@@ -19,6 +19,7 @@
+ #ifdef ENABLE_HEVC
+ #include <obs-hevc.h>
+ #endif
++#include <obs-av1.h>
+
+ #include "obs-ffmpeg-video-encoders.h"
+
+@@ -290,7 +291,9 @@ static void on_first_packet(void *data, AVPacket *pkt, struct darray *da)
+ 	} else
+ #endif
+ 		if (enc->av1) {
+-		// TODO: add obs_extract_av1_headers
++		obs_extract_av1_headers(pkt->data, pkt->size,
++					(uint8_t **)&da->array, &da->num,
++					&enc->header.array, &enc->header.num);
+ 	} else {
+ 		obs_extract_avc_headers(pkt->data, pkt->size,
+ 					(uint8_t **)&da->array, &da->num,
