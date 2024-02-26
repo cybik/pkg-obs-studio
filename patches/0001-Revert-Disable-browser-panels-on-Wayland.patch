@@ -8,10 +8,10 @@ This reverts commit 7402271392a6a74fb49f16d84fb3c04c1b603d9a.
  panel/browser-panel.hpp | 12 ------------
  1 file changed, 12 deletions(-)
 
-diff --git a/panel/browser-panel.hpp b/panel/browser-panel.hpp
+diff --git a/plugins/obs-browser/panel/browser-panel.hpp b/plugins/obs-browser/panel/browser-panel.hpp
 index dd61f38..5fb9d35 100644
---- a/panel/browser-panel.hpp
-+++ b/panel/browser-panel.hpp
+--- a/plugins/obs-browser/panel/browser-panel.hpp
++++ b/plugins/obs-browser/panel/browser-panel.hpp
 @@ -12,10 +12,6 @@
  #include <dlfcn.h>
  #endif
