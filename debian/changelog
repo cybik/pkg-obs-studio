@@ -1,3 +1,9 @@
+obs-studio (30.0.2-100pika3) pikauwu; urgency=low
+
+  Update to 30.0.2
+
+ -- Kevin Henkel <obs.goldace@gmail.com>  Sat, 04 Feb 2023 12:48:06 +0100
+
 obs-studio (30.0.2-100pika2) pikauwu; urgency=low
 
   Update to 30.0.2
